@@ -10,7 +10,16 @@ import { connectDB } from "./lib/db.js";
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 import { app, server } from "./lib/socket.js";
+import { match as pathMatch } from "path-to-regexp";
 
+function debugMatch(pattern, ...args) {
+  console.log("🔍 Matching pattern:", pattern);
+  return pathMatch(pattern, ...args);
+}
+
+// Use `debugMatch(...)` instead of `match(...)`
+
+debugMatch("/api/auth", { sensitive: true, strict: true });
 dotenv.config();
 
 const PORT = process.env.PORT;
