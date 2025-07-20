@@ -58,9 +58,17 @@ export const sendMessage = async (req, res) => {
     await newMessage.save();
 
     const receiverSocketId = getReceiverSocketId(receiverId);
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("newMessage", newMessage);
-    }
+    // Emit to receiver
+if (receiverSocketId) {
+  io.to(receiverSocketId).emit("newMessage", newMessage);
+}
+
+// Emit to sender
+const senderSocketId = getReceiverSocketId(senderId); // Sender is also online
+if (senderSocketId) {
+  io.to(senderSocketId).emit("newMessage", newMessage);
+}
+
 
     res.status(201).json(newMessage);
   } catch (error) {
