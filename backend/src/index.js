@@ -10,7 +10,7 @@ import { connectDB } from "./lib/db.js";
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 import { app, server } from "./lib/socket.js";
-import { match as pathMatch } from "path-to-regexp";
+
 
 
 dotenv.config();
@@ -33,10 +33,9 @@ app.use("/api/messages", messageRoutes);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-
-app.get("/{asteriskany}", (req, res) => {
+  app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
- });
+  });
 }
 
 server.listen(PORT, () => {
